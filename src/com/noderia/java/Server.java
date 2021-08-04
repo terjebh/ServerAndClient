@@ -15,7 +15,7 @@ import java.util.concurrent.ForkJoinPool;
 public class Server {
 
     private static ArrayList<ClientHandler> clients = new ArrayList<>();
-    private static ExecutorService pool = Executors.newFixedThreadPool(10);
+    private static ExecutorService pool = Executors.newFixedThreadPool(20);
 
     public static void main(String[] args) throws IOException {
 
