@@ -16,10 +16,12 @@ public class ClientHandler implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     private ArrayList<ClientHandler> clients;
+    private int clientNUmber;
 
-    public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
+    public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients, int clientNumber) throws IOException {
         this.client = clientSocket;
         this.clients = clients;
+        this.clientNUmber = clientNumber;
         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
         out = new PrintWriter(client.getOutputStream(), true);
     }
@@ -31,22 +33,22 @@ public class ClientHandler implements Runnable {
                 String request = in.readLine().toLowerCase(Locale.ROOT);
 
                 if(request.contains("date")) {
-                    out.println("The date today is: " + LocalDate.now());
+                    out.println("[SERVER] The date today is: " + LocalDate.now());
                 } else if (request.contains("lagre")) {
                     FileWriter notatFil = new FileWriter("notater.txt",true);
                     notatFil.append(request.replace("lagre","").trim()+"\n");
                     notatFil.close();
-                    out.println("Notatet er lagret");
+                    out.println("[SERVER] Notatet er lagret");
                     System.out.println("Notat lagret...");
                 } else if (request.startsWith("vis")) {
                     StringBuffer notater = new StringBuffer();
-                    notater.append("Innholdet i filen notater.txt\n\n");
+                    notater.append("[SERVER] Innholdet i filen notater.txt\n\n");
                     Files.lines(Paths.get("notater.txt")).forEach(a -> notater.append(a + "\n"));
                     out.println(notater);
                 } else if (request.startsWith("shout")) {
-                     outToAll(request.replace("shout ",""));
+                     outToAll(request.replace("shout ",""), clientNUmber);
                 } else {
-                    out.println("I don't know what that means...");
+                    out.println("[SERVER] I don't know what that means...");
                 }
             }
         } catch (IOException e) {
@@ -63,9 +65,9 @@ public class ClientHandler implements Runnable {
 
     }
 
-    private void outToAll(String msg) {
+    private void outToAll(String msg, int clientNUmber) {
         for (ClientHandler aClient : clients) {
-          aClient.out.println(msg);
+          aClient.out.println("Client "+clientNUmber+" says: "+msg);
         }
 
     }

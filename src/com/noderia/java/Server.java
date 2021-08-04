@@ -16,10 +16,12 @@ public class Server {
 
     private static ArrayList<ClientHandler> clients = new ArrayList<>();
     private static ExecutorService pool = Executors.newFixedThreadPool(20);
+    private static int clientNumber = 0;
 
     public static void main(String[] args) throws IOException {
 
         final int PORT;
+
 
         if(args.length == 1) {
             PORT = Integer.parseInt(args[0]);
@@ -31,8 +33,8 @@ public class Server {
         while (true) {
             System.out.println("[SERVER] Server running on port " + PORT + ", waiting for connections... ");
             Socket client = listener.accept();
-            System.out.println("Client connected");
-            ClientHandler clientThread = new ClientHandler(client, clients);
+            System.out.println("Client "+ ++clientNumber  +" connected");
+            ClientHandler clientThread = new ClientHandler(client, clients, clientNumber);
             clients.add(clientThread);
             pool.execute(clientThread);
         }
