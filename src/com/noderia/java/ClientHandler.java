@@ -1,7 +1,5 @@
 package com.noderia.java;
 
-import javax.net.ssl.HandshakeCompletedListener;
-import javax.sql.rowset.serial.SQLInputImpl;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
