@@ -32,7 +32,7 @@ public class Server {
             System.out.println("[SERVER] Server running on port " + PORT + ", waiting for connections... ");
             Socket client = listener.accept();
             System.out.println("Client connected");
-            ClientHandler clientThread = new ClientHandler(client);
+            ClientHandler clientThread = new ClientHandler(client, clients);
             clients.add(clientThread);
             pool.execute(clientThread);
         }

@@ -1,11 +1,13 @@
 package com.noderia.java;
 
+import javax.net.ssl.HandshakeCompletedListener;
 import javax.sql.rowset.serial.SQLInputImpl;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class ClientHandler implements Runnable {
@@ -13,9 +15,11 @@ public class ClientHandler implements Runnable {
     private Socket client;
     private BufferedReader in;
     private PrintWriter out;
+    private ArrayList<ClientHandler> clients;
 
-    public ClientHandler (Socket clientSocket) throws IOException {
+    public ClientHandler(Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
         this.client = clientSocket;
+        this.clients = clients;
         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
         out = new PrintWriter(client.getOutputStream(), true);
     }
@@ -37,8 +41,10 @@ public class ClientHandler implements Runnable {
                 } else if (request.startsWith("vis")) {
                     StringBuffer notater = new StringBuffer();
                     notater.append("Innholdet i filen notater.txt\n\n");
-                    Files.lines(Paths.get("notater.txt")).forEach(a -> notater.append(a+"\n"));
+                    Files.lines(Paths.get("notater.txt")).forEach(a -> notater.append(a + "\n"));
                     out.println(notater);
+                } else if (request.startsWith("shout")) {
+                     outToAll(request.replace("shout ",""));
                 } else {
                     out.println("I don't know what that means...");
                 }
@@ -53,6 +59,13 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
             out.close();
+        }
+
+    }
+
+    private void outToAll(String msg) {
+        for (ClientHandler aClient : clients) {
+          aClient.out.println(msg);
         }
 
     }
