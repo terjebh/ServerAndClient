@@ -10,12 +10,19 @@ import java.util.Locale;
 
 public class Server {
 
-    private static final int PORT = 9898;
 
     public static void main(String[] args) throws IOException {
 
+        final int PORT;
+
+        if(args.length == 1) {
+             PORT = Integer.parseInt(args[0]);
+        } else {
+             PORT = 9898;
+        }
+
         ServerSocket listener = new ServerSocket(PORT);
-        System.out.println("[SERVER] Server running, waiting for connections... ");
+        System.out.println("[SERVER] Server running on port "+PORT+", waiting for connections... ");
         Socket client = listener.accept();
         System.out.println("Client connected");
         PrintWriter out = new PrintWriter(client.getOutputStream(),true);
