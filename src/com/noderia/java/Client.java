@@ -12,8 +12,16 @@ public class Client {
 
     public static void main(String[] args) {
 
-        final String IP = args[0];
-        final int PORT = Integer.parseInt(args[1]);
+        final String IP;
+        final int PORT;
+
+        if(args.length == 2) {
+            IP = args[0];
+            PORT = Integer.parseInt(args[1]);
+        } else {
+            IP = "localhost";
+            PORT = 9898;
+        }
 
         System.out.println("IP: "+IP);
         System.out.println("Port: "+PORT);
