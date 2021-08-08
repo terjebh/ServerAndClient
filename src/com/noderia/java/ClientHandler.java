@@ -39,10 +39,9 @@ public class ClientHandler implements Runnable {
                     out.println("[SERVER] Notatet er lagret");
                     System.out.println("Notat lagret...");
                 } else if (request.startsWith("vis")) {
-                    StringBuffer notater = new StringBuffer();
-                    notater.append("[SERVER] Innholdet i filen notater.txt\n\n");
-                    Files.lines(Paths.get("notater.txt")).forEach(a -> notater.append(a + "\n"));
-                    out.println(notater);
+                   out.append("[SERVER] Innholdet i filen notater.txt\n\n");
+                    Files.lines(Paths.get("notater.txt")).forEach(a -> out.append(a + "\n"));
+                    out.println();
                 } else if (request.startsWith("shout")) {
                      outToAll(request.replace("shout ",""), clientNUmber);
                 } else {
