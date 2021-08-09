@@ -26,6 +26,7 @@ public class ServerConnection implements Runnable {
                 String serverResponse = in.readLine();
                 if(serverResponse == null) break;
                 System.out.println(serverResponse);
+                System.out.print("> ");
             }
         } catch (IOException e) {
             e.printStackTrace();

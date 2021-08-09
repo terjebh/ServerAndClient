@@ -6,3 +6,5 @@ jeg er ok
 husk ida
 test
 dette er et notat
+her er et notat til
+[2021-08-09T12:59:08.607087400] husk namsmannen!
